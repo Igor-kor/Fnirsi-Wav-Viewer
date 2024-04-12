@@ -1,4 +1,9 @@
-# fnirsi-web-viewer
+# fnirsi-wav-explorer
+
+This is an application for viewing oscilloscope files models FNISR1013D, FNISR1014D.
+
+Credits to Robert Tidey who decoded the 1013D .wav file format:
+https://github.com/roberttidey/FNISR1013DScope
 
 This template should help get you started developing with Vue 3 in Vite.
 

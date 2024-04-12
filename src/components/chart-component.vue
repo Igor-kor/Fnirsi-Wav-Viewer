@@ -5,7 +5,7 @@
   <div>
     <canvas ref="chartCanvas"></canvas>
   </div>
-  <input type="range" v-model="zoomValue" min="1" max="256" @input="updateZoom" />
+  <input type="range" v-model="zoomValue" min="1" max="512" @input="updateZoom" />
 </template>
 
 <script>
@@ -86,6 +86,7 @@ export default {
                 display: true,
                 drawBorder: false,
                 color: ctx => {
+                  if( ctx.tick.value == 0)return 'rgba(255,0,195,0.5)';
                   return 'rgba(255, 0, 0, 0.5)';
                 }
               },
@@ -101,6 +102,7 @@ export default {
                 display: true,
                 drawBorder: false,
                 color: ctx => {
+                  if( ctx.tick.value == 0)return 'rgba(255,0,195,0.5)';
                   return 'rgba(255, 0, 0, 0.5)';
                 }
               },
@@ -119,10 +121,6 @@ export default {
                 wheel: {
                   enabled: true, // Включение зума по колесику мыши
                 },
-                // drag:{
-                //   enabled: true,
-                //   modifierKey: 'ctrl'
-                // },
                 pinch: {
                   enabled: true // Включение зума по масштабированию жестами
                 },
@@ -138,8 +136,8 @@ export default {
     },
     updateZoom() {
       if (chart) {
-        chart.options.scales.y.min =  this.zoomValue;
-        chart.options.scales.y.max =  -this.zoomValue;
+        chart.options.scales.y.min = -this.zoomValue;
+        chart.options.scales.y.max = this.zoomValue-1;// todo: bug - draw float value if = this.zoomValue
         chart.update();
       }
     },

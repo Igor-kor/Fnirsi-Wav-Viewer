@@ -79,6 +79,7 @@ export default {
           ]
         },
         options: {
+          animation: false, // отключение анимации
           scales: {
             x: {
               auto: false, // Отключаем автоматическое масштабирование по оси x

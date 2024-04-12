@@ -19,6 +19,7 @@
 
 <script>
 import ChartComponent from './chart-component.vue';
+import axios from 'axios';
 export default {
   components: {
     ChartComponent
@@ -33,7 +34,26 @@ export default {
       // CH2Data2: null,
     }
   },
+  mounted() {
+    this.loadFileUrl('https://github.com/Igor-kor/fnirsi-wav-explorer/raw/main/test.wav');
+  },
   methods: {
+    // loadFile(fileName) {
+    //   // создаем объект File для имитации события change
+    //   const file = new File([], fileName);
+    //   // вызываем метод handleFile с имитированным событием
+    //   this.handleFile({ target: { files: [file] } });
+    // },
+    loadFileUrl(fileUrl) {
+      axios.get(fileUrl, { responseType: 'stream' })
+          .then(response => {
+            const file = new File([response.data], fileUrl.split('/').pop()); // Создаем объект File с полученными данными и именем файла из URL
+            this.handleFile({ target: { files: [file] } });
+          })
+          .catch(error => {
+            console.error('Error loading file:', error);
+          });
+    },
     handleFile(event) {
       const file = event.target.files[0];
       const reader = new FileReader();

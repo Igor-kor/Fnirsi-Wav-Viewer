@@ -35,7 +35,7 @@ export default {
     }
   },
   mounted() {
-    this.loadFileUrl('https://igor-kor.github.io/fnirsi-wav-explorer/test.wav');
+    this.loadFileUrl('https://igor-kor.github.io/Fnirsi-Wav-Viewer/test.wav');
   },
   methods: {
     // loadFile(fileName) {

@@ -45,7 +45,7 @@ export default {
     //   this.handleFile({ target: { files: [file] } });
     // },
     loadFileUrl(fileUrl) {
-      axios.get(fileUrl, { responseType: 'stream' })
+      axios.get(fileUrl, { responseType: 'blob' })
           .then(response => {
             const file = new File([response.data], fileUrl.split('/').pop()); // Создаем объект File с полученными данными и именем файла из URL
             this.handleFile({ target: { files: [file] } });

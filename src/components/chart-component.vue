@@ -7,6 +7,8 @@
 <script>
 import Chart from 'chart.js/auto';
 import zoomPlugin from 'chartjs-plugin-zoom';
+let ctx = null;
+let chart = null;
 export default {
   props: {
     channel1Data: {
@@ -21,12 +23,17 @@ export default {
   mounted() {
     this.renderChart();
   },
+  updated() {
+    chart.destroy();
+    this.renderChart();
+  },
   methods: {
     renderChart() {
-      const ctx = this.$refs.chartCanvas.getContext('2d');
+      ctx = this.$refs.chartCanvas.getContext('2d');
       Chart.register(zoomPlugin); // Регистрация плагина Zoom
-      new Chart(ctx, {
+      chart = new Chart(ctx, {
         type: 'line',
+        update: 'active',
         data: {
           labels: this.generateLabels(),
           datasets: [

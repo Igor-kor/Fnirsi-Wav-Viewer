@@ -1,7 +1,11 @@
 <template>
   <div>
+    {{ParseData.header.ScrollSpeed}}
+  </div>
+  <div>
     <canvas ref="chartCanvas"></canvas>
   </div>
+  <input type="range" v-model="zoomValue" min="1" max="256" @input="updateZoom" />
 </template>
 
 <script>
@@ -11,14 +15,33 @@ let ctx = null;
 let chart = null;
 export default {
   props: {
-    channel1Data: {
-      type: Array,
-      required: true
-    },
-    channel2Data: {
-      type: Array,
-      required: true
+    ParseData:{
+      required: true,
+      header:{
+        CH1VerticalScale:{},
+        CH2VerticalScale:{},
+        CH1Coupling:{},
+        CH2Coupling:{},
+        CH1Probe:{},
+        CH2Probe:{},
+        TimeScale:{},
+        TriggerType:{},
+        TriggerEdge:{},
+        ScreenBrightness:{},
+        GridBrightness:{},
+        ScrollSpeed:{}
+      },
+      CH1Data1:{},
+      CH2Data1:{},
+      CH1Data2:{},
+      CH2Data2:{},
+      OverData:{},
     }
+  },
+  data() {
+    return {
+      zoomValue: 256
+    };
   },
   mounted() {
     this.renderChart();
@@ -39,17 +62,17 @@ export default {
           datasets: [
             {
               label: 'Channel 1',
-              borderColor: 'rgb(255, 99, 132)',
-              backgroundColor: 'rgba(255, 99, 132, 0.2)',
-              data: this.channel1Data,
+              borderColor: 'rgb(241,219,41)',
+              backgroundColor: 'rgb(157,127,33)',
+              data: this.ParseData.CH1Data2,
               borderWidth: 1,
               pointStyle: 'line'
             },
             {
               label: 'Channel 2',
-              borderColor: 'rgb(54, 162, 235)',
-              backgroundColor: 'rgba(54, 162, 235, 0.2)',
-              data: this.channel2Data,
+              borderColor: 'rgb(54,229,235)',
+              backgroundColor: 'rgba(54,214,235,0.2)',
+              data: this.ParseData.CH2Data2,
               borderWidth: 1,
               pointStyle: 'line'
             }
@@ -58,41 +81,39 @@ export default {
         options: {
           scales: {
             x: {
+              auto: false, // Отключаем автоматическое масштабирование по оси x
               grid: {
                 display: true,
                 drawBorder: false,
                 color: ctx => {
-                  if (ctx.tick && ctx.tick.value % 2 === 0) {
-                    return 'rgba(255, 0, 0, 0.7)';
-                  }
-                  return 'transparent';
+                  return 'rgba(255, 0, 0, 0.5)';
                 }
               },
               ticks: {
-                maxTicksLimit: 14
-              }
+                maxTicksLimit: 28
+              },
             },
             y: {
+              min: -255, // Минимальное значение по оси x
+              max: 255,
+              auto: false ,// Отключаем автоматическое масштабирование по оси y
               grid: {
                 display: true,
                 drawBorder: false,
                 color: ctx => {
-                  if (ctx.tick && ctx.tick.value % 2 === 0) {
-                    return 'rgba(255, 0, 0, 0.7)';
-                  }
-                  return 'transparent';
+                  return 'rgba(255, 0, 0, 0.5)';
                 }
               },
               ticks: {
-                maxTicksLimit: 8
-              }
+                maxTicksLimit: 16
+              },
             }
           },
           plugins: {
             zoom: {
               pan: {
                 enabled: true,
-                mode: 'x' // Включение прокрутки по обеим осям X и Y
+                mode: 'xy' // Включение прокрутки по обеим осям X и Y
               },
               zoom: {
                 wheel: {
@@ -113,10 +134,16 @@ export default {
       });
     },
     generateLabels() {
-      // Генерация меток (по умолчанию используются числа 1, 2, 3,...)
-      return this.channel1Data.map((_, index) => `Point ${index + 1}`);
-    }
-  }
+      return this.ParseData.CH1Data2.map((_, index) => `Point ${index}`);
+    },
+    updateZoom() {
+      if (chart) {
+        chart.options.scales.y.min =  this.zoomValue;
+        chart.options.scales.y.max =  -this.zoomValue;
+        chart.update();
+      }
+    },
+  },
 };
 </script>
 

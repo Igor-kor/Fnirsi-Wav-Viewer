@@ -14,7 +14,12 @@ a,
   transition: 0.4s;
   padding: 3px;
 }
-
+.header{
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+}
 @media (hover: hover) {
   a:hover {
     background-color: hsla(160, 100%, 37%, 0.2);
@@ -29,7 +34,9 @@ a,
 
   #app {
     display: grid;
-    grid-template-columns: 1fr;
+    align-items: center;
+    justify-content: center;
+    grid-template-columns: 90%;
     padding: 0 2rem;
   }
 }

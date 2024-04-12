@@ -5,7 +5,7 @@
          type="file"
          @change="handleFile( $event )"/>
   <div>
-    <chart-component v-if="text" :channel1Data="text.CH1Data2" :channel2Data="text.CH2Data2" />
+    <chart-component v-if="text" :ParseData="text"  />
   </div>
   <p>{{ text }}</p>
 

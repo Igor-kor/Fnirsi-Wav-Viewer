@@ -1,6 +1,4 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
 import FileUpload from "@/components/FileUpload.vue";
 </script>
 

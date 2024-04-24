@@ -1,25 +1,19 @@
-
-
 <template>
   <input class="patientPorting"
          type="file"
          @change="handleFile( $event )"/>
   <div>
-    <chart-component v-if="text" :ParseData="text"  />
+    <chart-component v-if="text" :ParseData="text"/>
   </div>
-  <p>{{ text }}</p>
-
-<!--  <p>{{ headerData }}</p>-->
-<!--  <p>{{ CH1data1 }}</p>-->
-<!--  <p>{{ CH2data1 }}</p>-->
-<!--  <p>{{ CH1data2 }}</p>-->
-<!--  <p>{{ CH2data2 }}</p>-->
-<!--  <div>{{ jsonObj }}</div>-->
+  <!--  <p>{{ text }}</p>-->
 </template>
 
 <script>
 import ChartComponent from './chart-component.vue';
 import axios from 'axios';
+import {TimeScale} from "./../classes/TimeScale.js";
+import {Measurement} from "./../classes/Measurement.js";
+
 export default {
   components: {
     ChartComponent
@@ -27,11 +21,6 @@ export default {
   data() {
     return {
       text: null,
-      // header: null,
-      // CH1Data1: null,
-      // CH2Data1: null,
-      // CH1Data2: null,
-      // CH2Data2: null,
     }
   },
   mounted() {
@@ -45,10 +34,10 @@ export default {
     //   this.handleFile({ target: { files: [file] } });
     // },
     loadFileUrl(fileUrl) {
-      axios.get(fileUrl, { responseType: 'blob' })
+      axios.get(fileUrl, {responseType: 'blob'})
           .then(response => {
             const file = new File([response.data], fileUrl.split('/').pop()); // Создаем объект File с полученными данными и именем файла из URL
-            this.handleFile({ target: { files: [file] } });
+            this.handleFile({target: {files: [file]}});
           })
           .catch(error => {
             console.error('Error loading file:', error);
@@ -72,6 +61,8 @@ export default {
         // Реализация вашего алгоритма парсинга
         // Например:
         header: this.parseHeader(view),
+        CH1Measurement: new Measurement(view, 208),
+        CH2Measurement: new Measurement(view, 256),
         CH1Data1: this.parseChannelData(view, 1000, 3999),
         CH2Data1: this.parseChannelData(view, 4000, 6999),
         CH1Data2: this.parseChannelData(view, 7000, 8499),
@@ -110,7 +101,7 @@ export default {
 
       // Time scale
       const timeScale = view.getInt8(22);
-      headerData.TimeScale = this.parseTimeScale(timeScale);
+      headerData.TimeScale = new TimeScale(timeScale);
 
       // Trigger type
       const triggerType = view.getInt8(26);
@@ -141,15 +132,6 @@ export default {
     parseProbe(value) {
       const probes = ["x1", "x10", "x100"];
       return probes[value] || "Unknown";
-    },
-    parseTimeScale(value) {
-      const scales = [
-        "50S", "20S", "10S", "5S", "2S", "1S", "500mS", "200mS",
-        "100mS", "50mS", "20mS", "10mS", "5mS", "2mS", "1mS",
-        "500uS", "200uS", "100uS", "50uS", "20uS", "10uS", "5uS",
-        "2uS", "1uS", "500nS", "200nS", "100nS", "50nS", "20nS", "10nS"
-      ];
-      return scales[value] || "Unknown";
     },
     parseTriggerType(value) {
       const types = ["Auto", "Single", "Normal"];

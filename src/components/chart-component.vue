@@ -1,9 +1,80 @@
 <template>
-  <div>
-    {{ParseData.header.ScrollSpeed}}
-  </div>
-  <div>
-    <canvas ref="chartCanvas"></canvas>
+  <div class="grid-container">
+    <div class="top-row">
+      <!-- Верхняя строка из 12 ячеек -->
+      <div  class="cell">
+        TimeScale {{ParseData.header.TimeScale.GetStringTimeScale()}}
+      </div>
+      <div class="cell">
+        TriggerType {{ParseData.header.TriggerType}}
+      </div>
+      <div class="cell">
+        TriggerEdge {{ParseData.header.TriggerEdge}}
+      </div>
+      <div class="cell">
+        ScreenBrightness {{ParseData.header.ScreenBrightness}}
+      </div>
+      <div class="cell">
+        GridBrightness {{ParseData.header.GridBrightness}}
+      </div>
+      <div class="cell">
+        ScrollSpeed {{ParseData.header.ScrollSpeed}}
+      </div>
+      <div class="cell">
+        CH1VerticalScale  {{ParseData.header.CH1VerticalScale}}
+      </div>
+      <div class="cell">
+        CH2VerticalScale {{ParseData.header.CH2VerticalScale}}
+      </div>
+      <div class="cell">
+        CH1Coupling {{ParseData.header.CH1Coupling}}
+      </div>
+      <div class="cell">
+        CH2Coupling {{ParseData.header.CH2Coupling}}
+      </div>
+      <div class="cell">
+        CH1Probe {{ParseData.header.CH1Probe}}
+      </div>
+      <div class="cell">
+        CH2Probe {{ParseData.header.CH2Probe}}
+      </div>
+    </div>
+    <div class="main-cell">
+      <!-- Большая ячейка слева -->
+      <canvas ref="chartCanvas"></canvas>
+    </div>
+    <div class="right-column1">
+      <!-- Первый столбец справа из 12 ячеек -->
+      <div class="cell">Channel 1</div>
+      <div class="cell">VMax {{ParseData.CH1Measurement.VMax}}</div>
+      <div class="cell">VMin {{ParseData.CH1Measurement.VMin}}</div>
+      <div class="cell">Vavg {{ParseData.CH1Measurement.Vavg}}</div>
+      <div class="cell">Vrms {{ParseData.CH1Measurement.Vrms}}</div>
+      <div class="cell">Vpp {{ParseData.CH1Measurement.Vpp}}</div>
+      <div class="cell">Vp {{ParseData.CH1Measurement.Vp}}</div>
+      <div class="cell">Freq {{ParseData.CH1Measurement.Freq}}</div>
+      <div class="cell">Cysle {{ParseData.CH1Measurement.Cysle}}</div>
+      <div class="cell">TimePlus {{ParseData.CH1Measurement.TimePlus}}</div>
+      <div class="cell">TimeMinus {{ParseData.CH1Measurement.TimeMinus}}</div>
+      <div class="cell">DutyPlus {{ParseData.CH1Measurement.DutyPlus}}</div>
+      <div class="cell">DutyMinus {{ParseData.CH1Measurement.DutyMinus}}</div>
+    </div>
+    <div class="right-column2">
+      <!-- Второй столбец справа из 12 ячеек -->
+      <div class="cell">Channel 2</div>
+      <div class="cell">VMax {{ParseData.CH2Measurement.VMax}}</div>
+      <div class="cell">VMin {{ParseData.CH2Measurement.VMin}}</div>
+      <div class="cell">Vavg {{ParseData.CH2Measurement.Vavg}}</div>
+      <div class="cell">Vrms {{ParseData.CH2Measurement.Vrms}}</div>
+      <div class="cell">Vpp {{ParseData.CH2Measurement.Vpp}}</div>
+      <div class="cell">Vp {{ParseData.CH2Measurement.Vp}}</div>
+      <div class="cell">Freq {{ParseData.CH2Measurement.Freq}}</div>
+      <div class="cell">Cysle {{ParseData.CH2Measurement.Cysle}}</div>
+      <div class="cell">TimePlus {{ParseData.CH2Measurement.TimePlus}}</div>
+      <div class="cell">TimeMinus {{ParseData.CH2Measurement.TimeMinus}}</div>
+      <div class="cell">DutyPlus {{ParseData.CH2Measurement.DutyPlus}}</div>
+      <div class="cell">DutyMinus {{ParseData.CH2Measurement.DutyMinus}}</div>
+    </div>
   </div>
   <input type="range" v-model="zoomValue" min="1" max="512" @input="updateZoom" />
 </template>
@@ -31,6 +102,8 @@ export default {
         GridBrightness:{},
         ScrollSpeed:{}
       },
+      CH1Measurement:{},
+      CH2Measurement:{},
       CH1Data1:{},
       CH2Data1:{},
       CH1Data2:{},
@@ -64,7 +137,7 @@ export default {
               label: 'Channel 1',
               borderColor: 'rgb(241,219,41)',
               backgroundColor: 'rgb(157,127,33)',
-              data: this.ParseData.CH1Data2,
+              data: this.ParseData.CH1Data1,
               borderWidth: 1,
               pointStyle: 'line'
             },
@@ -72,9 +145,27 @@ export default {
               label: 'Channel 2',
               borderColor: 'rgb(54,229,235)',
               backgroundColor: 'rgba(54,214,235,0.2)',
-              data: this.ParseData.CH2Data2,
+              data: this.ParseData.CH2Data1,
               borderWidth: 1,
               pointStyle: 'line'
+            },
+            {
+              label: 'Channel 1 data 2',
+              borderColor: 'rgb(41,241,58)',
+              backgroundColor: 'rgb(101,157,33)',
+              data: this.ParseData.CH1Data2,
+              borderWidth: 1,
+              pointStyle: 'line',
+              hidden: true
+            },
+            {
+              label: 'Channel 2 data 2',
+              borderColor: 'rgb(54,96,235)',
+              backgroundColor: 'rgba(54,172,235,0.2)',
+              data: this.ParseData.CH2Data2,
+              borderWidth: 1,
+              pointStyle: 'line',
+              hidden: true
             }
           ]
         },
@@ -96,8 +187,8 @@ export default {
               },
             },
             y: {
-              min: -255, // Минимальное значение по оси x
-              max: 255,
+              min: -200, // Минимальное значение по оси
+              max: 200,
               auto: false ,// Отключаем автоматическое масштабирование по оси y
               grid: {
                 display: true,
@@ -133,7 +224,7 @@ export default {
       });
     },
     generateLabels() {
-      return this.ParseData.CH1Data2.map((_, index) => `Point ${index}`);
+      return this.ParseData.header.TimeScale.GetScalePoint();
     },
     updateZoom() {
       if (chart) {
@@ -147,5 +238,52 @@ export default {
 </script>
 
 <style scoped>
-/* Можно добавить стили для вашего компонента здесь */
+
+.parent {
+
+}
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  grid-template-rows: repeat(13, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  gap: 5px; /* Промежуток между ячейками */
+  justify-items: self-start;
+}
+
+.top-row {
+  display: grid;
+
+  grid-area: 1 / 1 / 2 / 15;
+  grid-template-columns: repeat(14, 1fr);
+  gap: 5px; /* Промежуток между ячейками */
+}
+
+.main-cell {
+  grid-area: 2 / 1 / 13 / 14;
+}
+
+.right-column1 {
+  color: rgb(241,219,41);
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: repeat(12, 1fr);
+  display: grid;
+  grid-area: 1 / 14 / 13 / 15;
+  gap: 0px; /* Промежуток между ячейками */
+}
+.right-column2 {
+  color: rgb(54,229,235);
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: repeat(12, 1fr);
+  display: grid;
+  grid-area: 1 / 15 / 13 / 15;
+  gap: 0px; /* Промежуток между ячейками */
+}
+canvas {
+  height: 100%;
+  width: 100%;
+}
 </style>

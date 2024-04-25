@@ -1,6 +1,7 @@
 <template>
+  <input type="range" v-model="zoomValue" min="1" max="512" @input="updateZoom" />
   <div class="grid-container">
-    <div class="top-row">
+
       <!-- Верхняя строка из 12 ячеек -->
       <div  class="cell">
         TimeScale {{ParseData.header.TimeScale.GetStringTimeScale()}}
@@ -38,7 +39,7 @@
       <div class="cell">
         CH2Probe {{ParseData.header.CH2Probe}}
       </div>
-    </div>
+
     <div class="main-cell">
       <!-- Большая ячейка слева -->
       <canvas ref="chartCanvas"></canvas>
@@ -76,7 +77,6 @@
       <div class="cell">DutyMinus {{ParseData.CH2Measurement.DutyMinus}}</div>
     </div>
   </div>
-  <input type="range" v-model="zoomValue" min="1" max="512" @input="updateZoom" />
 </template>
 
 <script>
@@ -252,14 +252,6 @@ export default {
   grid-row-gap: 0px;
   gap: 5px; /* Промежуток между ячейками */
   justify-items: self-start;
-}
-
-.top-row {
-  display: grid;
-
-  grid-area: 1 / 1 / 2 / 15;
-  grid-template-columns: repeat(14, 1fr);
-  gap: 5px; /* Промежуток между ячейками */
 }
 
 .main-cell {

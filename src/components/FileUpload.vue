@@ -14,6 +14,7 @@ import axios from 'axios';
 import {TimeScale} from "./../classes/TimeScale.js";
 import {Measurement} from "./../classes/Measurement.js";
 
+let YAxysOffset = 200;
 export default {
   components: {
     ChartComponent
@@ -146,8 +147,8 @@ export default {
     parseChannelData(view, start, end) {
       const channelData = [];
       for (let i = start; i <= end; i += 4) {
-        // Предположим, что данные для каждого канала - это 32-битные целые числа (Int32)
-        const value = view.getInt8(i);
+        // 2 byte fields (little endian). Values range from 0 - 399 where level 200 represents 0
+        const value = view.getUint16(i,true) - YAxysOffset;
         channelData.push(value);
       }
       return channelData;

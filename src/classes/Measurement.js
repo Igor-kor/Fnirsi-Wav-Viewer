@@ -1,27 +1,17 @@
 export class Measurement {
     constructor(view, startByte) {
-        this.VMax = view.getFloat32(startByte, true); // true указывает на little endian
-        this.VMin = view.getFloat32(startByte + 4, true);
-        this.Vavg = view.getFloat32(startByte + 8, true);
-        this.Vrms = view.getFloat32(startByte + 12, true);
-        this.Vpp = view.getFloat32(startByte + 16, true);
-        this.Vp = view.getFloat32(startByte + 20, true);
-        /*
-        * 00 00 00 01 - 256 Mhz
-        * 00 00 01 00 - 1 Mhz
-        * 00 10 00 00 - 268 Khz
-        * 00 01 00 00 - 16.7 Khz
-        * 10 00 00 00 - 1.04 Khz
-        * 00 00 e9 03 - 1 Khz
-        * 01 00 18 87 - 100 hz
-        * 01 00 00 00 - 65.5 hz
-        * */
-        this.Freq = this.addConversionIfNeeded( this.interpretFrequency(this.readMidBigEndianInt32(view, startByte + 24, true))) ;
-        this.Cysle = view.getFloat32(startByte + 28, true);
-        this.TimePlus = view.getFloat32(startByte + 32, true);
-        this.TimeMinus = view.getFloat32(startByte + 36, true);
-        this.DutyPlus = view.getFloat32(startByte + 40, true);
-        this.DutyMinus = view.getFloat32(startByte + 44, true);
+        this.VMax = this.readMidBigEndianInt32(view,startByte); // true указывает на little endian
+        this.VMin = this.readMidBigEndianInt32(view,startByte + 4);
+        this.Vavg = this.readMidBigEndianInt32(view,startByte + 8);
+        this.Vrms =this.readMidBigEndianInt32(view,startByte + 12);
+        this.Vpp = this.readMidBigEndianInt32(view,startByte + 16);
+        this.Vp = this.readMidBigEndianInt32(view,startByte + 20);
+        this.Freq = this.addConversionIfNeeded( this.interpretFrequency(this.readMidBigEndianInt32(view, startByte + 24))) ;
+        this.Cysle = this.readMidBigEndianInt32(view,startByte + 28);
+        this.TimePlus = this.readMidBigEndianInt32(view,startByte + 32);
+        this.TimeMinus = this.readMidBigEndianInt32(view,startByte + 36);
+        this.DutyPlus = this.readMidBigEndianInt32(view,startByte + 40);
+        this.DutyMinus = this.readMidBigEndianInt32(view,startByte + 44);
     }
 
     // Чтение 4 байт из массива байтов view в формате Mid-Big Endian как целое число (int)
@@ -49,6 +39,7 @@ export class Measurement {
     }
 
     // Функция для добавления преобразования, если число имеет много разрядов
+    // todo: need fix bug with Mhz as Khz
     addConversionIfNeeded(frequencyInfo) {
         if (frequencyInfo.value >= 1000) {
             // Больше или равно 1000, нужно добавить преобразование

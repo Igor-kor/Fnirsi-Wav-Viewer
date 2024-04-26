@@ -53,7 +53,7 @@
       <div class="cell">Vrms {{ParseData.CH1Measurement.Vrms}}</div>
       <div class="cell">Vpp {{ParseData.CH1Measurement.Vpp}}</div>
       <div class="cell">Vp {{ParseData.CH1Measurement.Vp}}</div>
-      <div class="cell">Freq {{ParseData.CH1Measurement.Freq}}</div>
+      <div class="cell">Freq {{ParseData.CH1Measurement.Freq.value.toFixed(2)}} {{ParseData.CH1Measurement.Freq.unit}}</div>
       <div class="cell">Cysle {{ParseData.CH1Measurement.Cysle}}</div>
       <div class="cell">TimePlus {{ParseData.CH1Measurement.TimePlus}}</div>
       <div class="cell">TimeMinus {{ParseData.CH1Measurement.TimeMinus}}</div>
@@ -69,7 +69,7 @@
       <div class="cell">Vrms {{ParseData.CH2Measurement.Vrms}}</div>
       <div class="cell">Vpp {{ParseData.CH2Measurement.Vpp}}</div>
       <div class="cell">Vp {{ParseData.CH2Measurement.Vp}}</div>
-      <div class="cell">Freq {{ParseData.CH2Measurement.Freq}}</div>
+      <div class="cell">Freq {{ParseData.CH2Measurement.Freq.value.toFixed(2)}} {{ParseData.CH2Measurement.Freq.unit}}</div>
       <div class="cell">Cysle {{ParseData.CH2Measurement.Cysle}}</div>
       <div class="cell">TimePlus {{ParseData.CH2Measurement.TimePlus}}</div>
       <div class="cell">TimeMinus {{ParseData.CH2Measurement.TimeMinus}}</div>

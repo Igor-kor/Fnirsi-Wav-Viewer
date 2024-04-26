@@ -80,21 +80,21 @@ export default {
       const ch1VerticalScale = view.getInt8(4);
       headerData.CH1VerticalScale = this.parseVerticalScale(ch1VerticalScale);
 
-      // CH2 vertical scale
-      const ch2VerticalScale = view.getInt8(14);
-      headerData.CH2VerticalScale = this.parseVerticalScale(ch2VerticalScale);
-
       // CH1 coupling
       const ch1Coupling = view.getInt8(8);
       headerData.CH1Coupling = this.parseCoupling(ch1Coupling);
 
-      // CH2 coupling
-      const ch2Coupling = view.getInt8(18);
-      headerData.CH2Coupling = this.parseCoupling(ch2Coupling);
-
       // CH1 probe
       const ch1Probe = view.getInt8(10);
       headerData.CH1Probe = this.parseProbe(ch1Probe);
+
+      // CH2 vertical scale
+      const ch2VerticalScale = view.getInt8(14);
+      headerData.CH2VerticalScale = this.parseVerticalScale(ch2VerticalScale);
+
+      // CH2 coupling
+      const ch2Coupling = view.getInt8(18);
+      headerData.CH2Coupling = this.parseCoupling(ch2Coupling);
 
       // CH2 probe
       const ch2Probe = view.getInt8(20);
@@ -103,6 +103,9 @@ export default {
       // Time scale
       const timeScale = view.getInt8(22);
       headerData.TimeScale = new TimeScale(timeScale);
+
+      // Scroll speed
+      headerData.ScrollSpeed = this.parseScrollSpeed(view.getInt8(24));
 
       // Trigger type
       const triggerType = view.getInt8(26);
@@ -117,9 +120,6 @@ export default {
 
       // Grid Brightness
       headerData.GridBrightness = view.getInt8(122);
-
-      // Scroll speed
-      headerData.ScrollSpeed = this.parseScrollSpeed(view.getInt8(24));
 
       return headerData;
     },

@@ -1,7 +1,7 @@
 # fnirsi-wav-viewer
 
 This is an web application for viewing oscilloscope files models FNIRSI1013D, FNIRSI1014D.
-See https://igor-kor.github.io/fnirsi-wav-viewer/
+See https://igor-kor.github.io/Fnirsi-Wav-Viewer/
 
 Credits to Robert Tidey who decoded the 1013D .wav file format:
 https://github.com/roberttidey/FNISR1013DScope

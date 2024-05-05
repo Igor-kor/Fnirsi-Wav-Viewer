@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/Fnirsi-Wav-Viewer/sw.js', { scope: '/Fnirsi-Wav-Viewer/' })})}

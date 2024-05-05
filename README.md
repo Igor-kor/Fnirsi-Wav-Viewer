@@ -8,6 +8,17 @@ See https://igor-kor.github.io/Fnirsi-Wav-Viewer/
 Credits to Robert Tidey who decoded the 1013D .wav file format:
 https://github.com/roberttidey/FNISR1013DScope
 
+## Todo list
+- [x] Parse file wav
+- [x] Display chart
+- [x] Parse right measurement
+- [ ] Display right measurement value
+- [ ] Multiple file view
+- [ ] Move line on chart
+- [ ] Fix bug with change Y axis
+- [ ] Multiple line translate value in one scale
+- [ ] Change VerticalScale value and maybe Probe value
+
 ## Environment
 This app developing with Vue 3 in Vite.
 

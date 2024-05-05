@@ -3,10 +3,13 @@
 This is an web application for viewing oscilloscope files models FNIRSI1013D, FNIRSI1014D.
 See https://igor-kor.github.io/Fnirsi-Wav-Viewer/
 
+![simple](other\simple.bmp)
+
 Credits to Robert Tidey who decoded the 1013D .wav file format:
 https://github.com/roberttidey/FNISR1013DScope
 
-This template should help get you started developing with Vue 3 in Vite.
+## Environment
+This app developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
 
@@ -34,7 +37,7 @@ npm run dev
 npm run build
 ```
 
-push subtree
+push subtree for github pages
 ```sh
 git subtree push --prefix dist origin gh-pages
 ```

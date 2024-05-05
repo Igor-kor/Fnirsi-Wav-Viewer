@@ -1,56 +1,15 @@
 <template>
   <input type="range" v-model="zoomValue" min="1" max="512" @input="updateZoom" />
   <div class="grid-container">
-
-      <!-- Верхняя строка из 12 ячеек -->
-      <div  class="cell">
-        TimeScale {{ParseData.header.TimeScale.GetStringTimeScale()}}
-      </div>
-      <div class="cell">
-        TriggerType {{ParseData.header.TriggerType}}
-      </div>
-      <div class="cell">
-        TriggerEdge {{ParseData.header.TriggerEdge}}
-      </div>
-      <div class="cell">
-        ScreenBrightness {{ParseData.header.ScreenBrightness}}
-      </div>
-      <div class="cell">
-        GridBrightness {{ParseData.header.GridBrightness}}
-      </div>
-      <div class="cell">
-        ScrollSpeed {{ParseData.header.ScrollSpeed}}
-      </div>
-      <div class="cell">
-        CH1VerticalScale  {{ParseData.header.CH1VerticalScale}}
-      </div>
-      <div class="cell">
-        CH2VerticalScale {{ParseData.header.CH2VerticalScale}}
-      </div>
-      <div class="cell">
-        CH1Coupling {{ParseData.header.CH1Coupling}}
-      </div>
-      <div class="cell">
-        CH2Coupling {{ParseData.header.CH2Coupling}}
-      </div>
-      <div class="cell">
-        CH1Probe {{ParseData.header.CH1Probe}}
-      </div>
-      <div class="cell">
-        CH2Probe {{ParseData.header.CH2Probe}}
-      </div>
-
+    <HeaderData :header = "ParseData.header"/>
     <div class="main-cell">
-      <!-- Большая ячейка слева -->
       <canvas ref="chartCanvas"></canvas>
     </div>
     <div class="right-column1">
-      <!-- Первый столбец справа из 12 ячеек -->
       <div class="cell">Channel 1</div>
       <MeasurementData :measurement="ParseData.CH1Measurement" />
     </div>
     <div class="right-column2">
-      <!-- Второй столбец справа из 12 ячеек -->
       <div class="cell">Channel 2</div>
       <MeasurementData :measurement="ParseData.CH2Measurement" />
     </div>
@@ -61,35 +20,14 @@
 import Chart from 'chart.js/auto';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import MeasurementData from "@/components/MeasurementData.vue";
+import HeaderData from "@/components/HeaderData.vue";
+import {ParsedData} from "@/classes/ParsedData.js";
 let ctx = null;
 let chart = null;
 export default {
-  components: {MeasurementData},
+  components: {HeaderData, MeasurementData},
   props: {
-    ParseData:{
-      required: true,
-      header:{
-        CH1VerticalScale:{},
-        CH2VerticalScale:{},
-        CH1Coupling:{},
-        CH2Coupling:{},
-        CH1Probe:{},
-        CH2Probe:{},
-        TimeScale:{},
-        TriggerType:{},
-        TriggerEdge:{},
-        ScreenBrightness:{},
-        GridBrightness:{},
-        ScrollSpeed:{}
-      },
-      CH1Measurement:{},
-      CH2Measurement:{},
-      CH1Data1:{},
-      CH2Data1:{},
-      CH1Data2:{},
-      CH2Data2:{},
-      OverData:{},
-    }
+    ParseData:{ParsedData}
   },
   data() {
     return {
@@ -106,7 +44,7 @@ export default {
   methods: {
     renderChart() {
       ctx = this.$refs.chartCanvas.getContext('2d');
-      Chart.register(zoomPlugin); // Регистрация плагина Zoom
+      Chart.register(zoomPlugin);
       chart = new Chart(ctx, {
         type: 'line',
         update: 'active',
@@ -150,7 +88,7 @@ export default {
           ]
         },
         options: {
-          animation: false, // отключение анимации
+          animation: false,
           scales: {
             x: {
               auto: false, // Отключаем автоматическое масштабирование по оси x
@@ -218,12 +156,6 @@ export default {
 </script>
 
 <style scoped>
-
-.parent {
-
-}
-
-
 .grid-container {
   display: grid;
   grid-template-columns: repeat(14, 1fr);
@@ -233,11 +165,9 @@ export default {
   gap: 5px; /* Промежуток между ячейками */
   justify-items: self-start;
 }
-
 .main-cell {
   grid-area: 2 / 1 / 13 / 14;
 }
-
 .right-column1 {
   color: rgb(241,219,41);
   grid-template-columns: repeat(1, 1fr);

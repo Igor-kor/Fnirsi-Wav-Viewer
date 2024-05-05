@@ -47,34 +47,12 @@
     <div class="right-column1">
       <!-- Первый столбец справа из 12 ячеек -->
       <div class="cell">Channel 1</div>
-      <div class="cell">VMax {{ParseData.CH1Measurement.VMax/1000}}V</div>
-      <div class="cell">VMin {{ParseData.CH1Measurement.VMin/1000}}V</div>
-      <div class="cell">Vavg {{ParseData.CH1Measurement.Vavg/1000}}V</div>
-      <div class="cell">Vrms {{ParseData.CH1Measurement.Vrms/1000}}V</div>
-      <div class="cell">Vpp {{ParseData.CH1Measurement.Vpp/1000}}V</div>
-      <div class="cell">Vp {{ParseData.CH1Measurement.Vp/1000}}V</div>
-      <div class="cell">Freq {{ParseData.CH1Measurement.Freq.value.toFixed(2)}} {{ParseData.CH1Measurement.Freq.unit}}</div>
-      <div class="cell">Cysle {{ParseData.CH1Measurement.Cysle}}</div>
-      <div class="cell">TimePlus {{ParseData.CH1Measurement.TimePlus}}</div>
-      <div class="cell">TimeMinus {{ParseData.CH1Measurement.TimeMinus}}</div>
-      <div class="cell">DutyPlus {{ParseData.CH1Measurement.DutyPlus}}%</div>
-      <div class="cell">DutyMinus {{ParseData.CH1Measurement.DutyMinus}}%</div>
+      <MeasurementData :measurement="ParseData.CH1Measurement" />
     </div>
     <div class="right-column2">
       <!-- Второй столбец справа из 12 ячеек -->
       <div class="cell">Channel 2</div>
-      <div class="cell">VMax {{ParseData.CH2Measurement.VMax/1000}}V</div>
-      <div class="cell">VMin {{ParseData.CH2Measurement.VMin/1000}}V</div>
-      <div class="cell">Vavg {{ParseData.CH2Measurement.Vavg/1000}}V</div>
-      <div class="cell">Vrms {{ParseData.CH2Measurement.Vrms/1000}}V</div>
-      <div class="cell">Vpp {{ParseData.CH2Measurement.Vpp/1000}}V</div>
-      <div class="cell">Vp {{ParseData.CH2Measurement.Vp/1000}}V</div>
-      <div class="cell">Freq {{ParseData.CH2Measurement.Freq.value.toFixed(2)}} {{ParseData.CH2Measurement.Freq.unit}}</div>
-      <div class="cell">Cysle {{ParseData.CH2Measurement.Cysle}}</div>
-      <div class="cell">TimePlus {{ParseData.CH2Measurement.TimePlus}}</div>
-      <div class="cell">TimeMinus {{ParseData.CH2Measurement.TimeMinus}}</div>
-      <div class="cell">DutyPlus {{ParseData.CH2Measurement.DutyPlus}}%</div>
-      <div class="cell">DutyMinus {{ParseData.CH2Measurement.DutyMinus}}%</div>
+      <MeasurementData :measurement="ParseData.CH2Measurement" />
     </div>
   </div>
 </template>
@@ -82,9 +60,11 @@
 <script>
 import Chart from 'chart.js/auto';
 import zoomPlugin from 'chartjs-plugin-zoom';
+import MeasurementData from "@/components/MeasurementData.vue";
 let ctx = null;
 let chart = null;
 export default {
+  components: {MeasurementData},
   props: {
     ParseData:{
       required: true,

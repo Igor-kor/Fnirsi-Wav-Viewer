@@ -26,18 +26,18 @@ export class WavFile {
             new Header(view),
             new Measurement(view, 208),
             new Measurement(view, 256),
-            this.parseChannelData(view, 1000, 3999),
-            this.parseChannelData(view, 4000, 6999),
-            this.parseChannelData(view, 7000, 8499),
-            this.parseChannelData(view, 8500, 9999),
+            this.parseChannelData(view, 1000, 3999,this.YAxysOffset),
+            this.parseChannelData(view, 4000, 6999,this.YAxysOffset),
+            this.parseChannelData(view, 7000, 8499,this.YAxysOffset),
+            this.parseChannelData(view, 8500, 9999,this.YAxysOffset),
             this.parseChannelData(view, 10000, 14999)
         )
     };
-    parseChannelData(view, start, end) {
+    parseChannelData(view, start, end, offset= 0) {
         const channelData = [];
         for (let i = start; i <= end; i += 4) {
             // 2 byte fields (little endian). Values range from 0 to 399 where level 200 represents 0
-            const value = view.getUint16(i,true) - this.YAxysOffset;
+            const value = view.getUint16(i,true) - offset;
             channelData.push(value);
         }
         return channelData;

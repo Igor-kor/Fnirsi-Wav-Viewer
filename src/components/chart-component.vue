@@ -57,7 +57,8 @@ export default {
               backgroundColor: 'rgb(157,127,33)',
               data: this.ParseData.CH1Data1,
               borderWidth: 1,
-              pointStyle: 'line'
+              pointStyle: 'line',
+              hidden: !this.ParseData.header.CH1ON
             },
             {
               label: 'Channel 2',
@@ -65,7 +66,8 @@ export default {
               backgroundColor: 'rgba(54,214,235,0.2)',
               data: this.ParseData.CH2Data1,
               borderWidth: 1,
-              pointStyle: 'line'
+              pointStyle: 'line',
+              hidden: !this.ParseData.header.CH2ON
             },
             {
               label: 'Channel 1 data 2',

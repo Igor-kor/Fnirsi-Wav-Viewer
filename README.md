@@ -20,7 +20,7 @@ https://github.com/roberttidey/FNISR1013DScope
 - [ ] Fix bug with change Y axis
 - [ ] Multiple line translate value in one scale
 - [ ] Change VerticalScale value and maybe Probe value
-- [ ] XY Display mode
+- [x] XY Display mode
 
 ## Environment
 This app developing with Vue 3 in Vite.

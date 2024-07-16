@@ -1,25 +1,11 @@
 <template>
   <!-- Верхняя строка из 12 ячеек -->
-  <div class="cell ch1Color">
-    CH1ON {{header.CH1ON}}
-  </div>
-  <div class="cell ch1Color">
-    CH1FFT {{header.CH1FFT}}
-  </div>
-  <div class="cell ch1Color">
-    CH1VerticalScale {{header.CH1VerticalScale}}
-  </div>
-  <div class="cell ch1Color">
-    CH1Coupling {{header.CH1Coupling}}
-  </div>
-  <div class="cell ch1Color">
-    CH1Probe<br>{{header.CH1Probe}}
+
+  <div class="cell ch2Color">
+    CH2 ON<br>{{header.CH2ON}}
   </div>
   <div class="cell ch2Color">
-    CH2ON {{header.CH2ON}}
-  </div>
-  <div class="cell ch2Color">
-    CH2FFT {{header.CH2FFT}}
+    CH2 FFT<br>{{header.CH2FFT}}
   </div>
   <div class="cell ch2Color">
     CH2VerticalScale {{header.CH2VerticalScale}}
@@ -51,6 +37,7 @@
   </div>
   <div class="cell">
     XYMode<br>{{header.XYMode}}
+    <input type="checkbox" v-model="header.XYMode" v-bind:true-value=1 v-bind:false-value=0>
   </div>
 </template>
 

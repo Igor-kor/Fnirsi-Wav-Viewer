@@ -14,7 +14,7 @@
       <MeasurementData :measurement="ParseData.CH2Measurement" />
     </div>
   </div>
-  <canvas ref="chartXYCanvas"></canvas>
+    <ChartXYMode v-if="this.ParseData.header.XYMode" :ParseData="ParseData"/>
 </template>
 
 <script>
@@ -23,12 +23,11 @@ import zoomPlugin from 'chartjs-plugin-zoom';
 import MeasurementData from "@/components/MeasurementData.vue";
 import HeaderData from "@/components/HeaderData.vue";
 import {ParsedData} from "@/classes/ParsedData.js";
+import ChartXYMode from "@/components/ChartXYMode.vue";
 let ctx = null;
-let ctx2 = null;
 let chart = null;
-let chart2 = null;
 export default {
-  components: {HeaderData, MeasurementData},
+  components: {ChartXYMode, HeaderData, MeasurementData},
   props: {
     ParseData:{ParsedData}
   },
@@ -42,7 +41,6 @@ export default {
   },
   updated() {
     chart.destroy();
-    chart2.destroy();
     this.renderChart();
   },
   methods: {
@@ -56,7 +54,6 @@ export default {
       }
 
       ctx = this.$refs.chartCanvas.getContext('2d');
-      ctx2 = this.$refs.chartXYCanvas.getContext('2d');
       Chart.register(zoomPlugin);
       chart = new Chart(ctx, {
         type: 'line',
@@ -156,75 +153,6 @@ export default {
         }
       });
 
-      chart2 = new Chart(ctx2, {
-        type: 'scatter',
-        update: 'active',
-        data: {
-          labels: this.generateLabels(),
-          datasets: [{
-            label: 'XY mode',
-            borderColor: 'rgb(228,41,241)',
-            backgroundColor: 'rgb(116,33,157)',
-            data: mergedArray,
-            borderWidth: 1,
-            pointStyle: 'line',
-            showLine: true,
-          }]
-        },
-        options: {
-          responsive: true,
-          animation: false,
-          scales: {
-            x: {
-              auto: false, // Отключаем автоматическое масштабирование по оси x
-              grid: {
-                display: true,
-                drawBorder: false,
-                color: ctx => {
-                  if( ctx.tick.value == 0)return 'rgba(255,0,195,0.5)';
-                  return 'rgba(255, 0, 0, 0.5)';
-                }
-              },
-              ticks: {
-                maxTicksLimit: 28
-              },
-            },
-            y: {
-              min: -200, // Минимальное значение по оси
-              max: 200,
-              auto: false ,// Отключаем автоматическое масштабирование по оси y
-              grid: {
-                display: true,
-                drawBorder: false,
-                color: ctx => {
-                  if( ctx.tick.value == 0)return 'rgba(255,0,195,0.5)';
-                  return 'rgba(255, 0, 0, 0.5)';
-                }
-              },
-              ticks: {
-                maxTicksLimit: 16
-              },
-            }
-          },
-          plugins: {
-            zoom: {
-              pan: {
-                enabled: true,
-                mode: 'xy' // Включение прокрутки по обеим осям X и Y
-              },
-              zoom: {
-                wheel: {
-                  enabled: true, // Включение зума по колесику мыши
-                },
-                pinch: {
-                  enabled: true // Включение зума по масштабированию жестами
-                },
-                mode: 'x', // Зумирование и по x и по y
-              }
-            }
-          }
-        }
-      });
     },
     generateLabels() {
       return this.ParseData.header.TimeScale.GetScalePoint();
